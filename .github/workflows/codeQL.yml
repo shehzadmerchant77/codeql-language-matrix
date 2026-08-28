@@ -9,10 +9,17 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      # required for all workflows
+								  
       security-events: write
       actions: read
       contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'python', 'ruby' ]
+        # You can replace these with any CodeQL-supported languages:
+        # cpp, csharp, go, java, javascript, python, ruby
 
     steps:
       - name: Checkout repository
@@ -20,6 +27,8 @@ jobs:
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
